@@ -8,7 +8,6 @@ if(!isset($_SESSION['admin'])){
 }
 
 echo '<div id = "adminPanel">';
-echo '<a href = "index.php"><img src = "images/logo.png" id = "home-logo" /></a>';
 echo 'Hello, ' . $_SESSION['admin'] . '<br>';
 echo '<a href = "adminpanel.php?view=viewRecords">View Records</a><br>';
 echo '<a href = "adminpanel.php?view=viewReports">View Reports</a><br>';
