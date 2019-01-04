@@ -1,0 +1,93 @@
+<?php
+session_start();
+include('src/config.php');
+$exe = new config();
+
+if(!isset($_SESSION['admin'])){
+    header('location: login.php');
+}
+
+echo '<div id = "adminPanel">';
+echo 'Hello, ' . $_SESSION['admin'] . '<br>';
+echo '<a href = "adminpanel.php?view=view">View Records</a><br>';
+echo '<a href = "adminpanel.php?viewReports=reports">View Reports</a><br>';
+echo '<a href = "trackOrders.php">Track Orders</a><br>';
+echo '<a href = "logout.php">Log out</a><br>';
+echo '</div>';
+
+if(isset($_GET['view'])){
+    $show = $exe->view();
+    
+    echo '<form action = "modifyOrders.php" method = "POST">';
+    echo '<div id = "cat">';
+    echo '<select name = "cargoType" id = "cargoType">';
+    echo '<option value = "Categories">Categories</option>';
+    echo '<option value = "Service Type">Service Type</option>';
+    echo '<option value = "Cargo Type">Cargo Type</option>';
+    echo '<option value = "Status">Status</option>';
+    echo '</select>';
+    echo '</div>';
+
+    echo '<table border = "1" style = "width: 100%;">';
+    echo <<<THEAD
+        <tr>
+            <th>Tracking ID</th>
+            <th>Sender Name</th>
+            <th>Sender Email</th>
+            <th>Package</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Receiver</th>
+            <th>Status</th>
+            <th>Action</th>
+        <tr>
+THEAD;
+    
+    while($details = $show->fetch_assoc()){
+        $senderName = $details['senderName'];
+        $senderEmail = $details['senderEmail'];
+        $serviceType = $details['serviceType'];
+        $origin = $details['origin'];
+        $destination = $details['destination'];
+        $receiver = $details['receiver'];
+        $cargoType = $details['cargoType'];
+        $trackId = $details['trackId'];
+        $status = $details['theStatus'];
+        $id = $details['Id'];
+
+
+
+        echo <<<TBODY
+        <tr>
+            <input type = "hidden" name = "id" value = "$id" />
+            <td>$trackId</td>
+            <input type = "hidden" name = "theTrack" value = "$trackId" />
+            <td>$senderName</td>
+            <input type = "hidden" name = "sender" value = "$senderName" />
+            <td>$senderEmail</td>
+            <input type = "hidden" name = "email" value = "$senderEmail" />
+            <td>$cargoType</td>
+            <input type = "hidden" name = "type" value = "$cargoType" />
+            <td>$origin</td>
+            <input type = "hidden" name = "origin" value = "$origin" />
+            <td>$destination</td>
+            <input type = "hidden" name = "destination" value = "$destination" />
+            <td>$receiver</td>
+            <input type = "hidden" name = "receiver" value = "$receiver" />
+            <td>$status</td>
+            <input type = "hidden" name = "stat" value = "$status" />
+            <td>
+                <button type = "submit" name = "up">
+                    Modify
+                </button>
+            </td>
+        </tr>
+TBODY;
+        
+    }
+    echo '</table>';
+    echo '</form>';
+} else if(isset($_GET['viewReports'])){
+    echo 'Reports';
+}
+?>
