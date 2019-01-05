@@ -5,6 +5,10 @@
 <body>
 <?PHP
 session_start();
+
+if(isset($_SESSION['admin'])){
+    header('location: adminpanel.php');
+}
     include('src/config.php');
     echo '<style type = "text/css">
     html {
