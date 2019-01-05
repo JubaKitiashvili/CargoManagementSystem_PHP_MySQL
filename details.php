@@ -8,6 +8,8 @@ session_start();
 
 if(isset($_SESSION['admin'])){
     header('location: adminpanel.php');
+} else {
+    // do nothing...
 }
     include('src/config.php');
     echo '<style type = "text/css">
